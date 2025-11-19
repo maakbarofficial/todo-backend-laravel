@@ -13,15 +13,8 @@ Route::prefix('v1')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
 
     Route::middleware('auth:api')->group(function () {
-        Route::get('/me', function () {
-            return response()->json([
-                'success' => true,
-                'message' => 'Authenticated user fetched successfully',
-                'data' => auth()->user()
-            ]);
-        });
-
+        Route::get('/profile', [AuthController::class, 'profile']);
         Route::post('/logout', [AuthController::class, 'logout']);
-        Route::post('/refresh-token', [AuthController::class, 'refresh']);
+        Route::post('/refresh-token', [AuthController::class, 'refreshToken']);
     });
 });

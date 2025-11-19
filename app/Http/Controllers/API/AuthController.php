@@ -87,6 +87,15 @@ class AuthController extends Controller
         }
     }
 
+    public function Profile(Request $request)
+    {
+        return response()->json([
+            'success' => true,
+            'message' => 'Profile fetched successfully',
+            'data' => $request->user()
+        ]);
+    }
+
     public function logout()
     {
         try {
@@ -114,7 +123,7 @@ class AuthController extends Controller
         }
     }
 
-    public function refresh()
+    public function refreshToken()
     {
         try {
             $newToken = JWTAuth::refresh(JWTAuth::getToken());
