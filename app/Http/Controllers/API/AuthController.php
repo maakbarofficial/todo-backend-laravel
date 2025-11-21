@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 use Throwable;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -22,6 +23,17 @@ class AuthController extends Controller
         ]);
 
         try {
+
+            $roleName = $validated['role'];
+            $role = Role::where('name', $roleName)->first();
+
+            if (!$role) {
+                return response()->json([
+                    'success' => false,
+                    'message' => "Role '{$roleName}' does not exist.",
+                    'data' => null,
+                ], 422);
+            }
 
             $user = User::create([
                 'name' => $validated['name'],

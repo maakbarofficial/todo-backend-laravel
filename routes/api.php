@@ -25,12 +25,10 @@ Route::prefix('v1')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout']);
         Route::post('/refresh-token', [AuthController::class, 'refreshToken']);
 
-        Route::get('/todos', [TodoController::class, 'all']);
-        Route::post('/todos', [TodoController::class, 'create']);
+        Route::get('/todos', [TodoController::class, 'all'])->middleware('permission:get-all-todo');
         Route::get('/todos/{id}', [TodoController::class, 'get']);
-        Route::middleware('permission:edit-todo')->group(function () {
-            Route::put('/todos/{id}', [TodoController::class, 'update']);
-        });
-        Route::delete('/todos/{id}', [TodoController::class, 'delete']);
+        Route::post('/todos', [TodoController::class, 'create'])->middleware('permission:create-todo');
+        Route::put('/todos/{id}', [TodoController::class, 'update'])->middleware('permission:edit-todo');
+        Route::delete('/todos/{id}', [TodoController::class, 'delete'])->middleware('permission:delete-todo');
     });
 });
