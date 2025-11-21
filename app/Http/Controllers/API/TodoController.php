@@ -11,6 +11,9 @@ class TodoController extends Controller
 {
     public function all(Request $request)
     {
+        // dd(auth()->user()->hasRole('Admin'));
+        // dd(auth()->user()->can('get-all-todos'));
+        // dd(auth()->user());
         try {
             $todos = Todo::where('user_id', $request->user()->id)->get();
 

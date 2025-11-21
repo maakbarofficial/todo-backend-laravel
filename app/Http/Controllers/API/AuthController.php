@@ -18,6 +18,7 @@ class AuthController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:50|unique:users',
             'password' => 'required|string|min:8',
+            'role' => 'required|string'
         ]);
 
         try {
@@ -28,10 +29,13 @@ class AuthController extends Controller
                 'password' => Hash::make($validated['password']),
             ]);
 
+            $user->assignRole($validated['role']);
+            $user->givePermissionTo('delete-todo');
+
             return response()->json([
                 'success' => true,
                 'message' => 'User registered successfully',
-                'data' => $user,
+                'data' => $user->load('roles', 'permissions'),
             ], 201);
         } catch (Throwable $e) {
             return response()->json([
