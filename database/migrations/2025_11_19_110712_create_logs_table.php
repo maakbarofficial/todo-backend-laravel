@@ -13,11 +13,17 @@ return new class extends Migration
     {
         Schema::create('logs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('set null');
-            $table->text('log');
-            $table->string('ip')->nullable();
-            $table->decimal('lat', 10, 7)->nullable();
-            $table->decimal('long', 10, 7)->nullable();
+            $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
+            $table->string('user_name')->nullable();
+            $table->string('method', 10);
+            $table->text('url');
+            $table->ipAddress('ip_address')->nullable();
+            $table->string('device')->nullable();
+            $table->string('browser')->nullable();
+            $table->string('platform')->nullable();
+            $table->json('payload')->nullable();
+            $table->integer('status_code')->nullable();
+            $table->float('execution_time')->nullable();
             $table->timestamps();
         });
     }
